@@ -3,9 +3,11 @@
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { useGetSalesHistoryQuery } from "../redux/features/sales/saleApi";
+import { useState } from "react";
 
 function SalesHistory() {
   const { data, isLoading, isError } = useGetSalesHistoryQuery(undefined);
+  const [selectedOption, setSelectedOption] = useState("daily");
 
   console.log({ isError });
   if (isLoading) {
@@ -15,45 +17,61 @@ function SalesHistory() {
       </div>
     );
   }
+
   const generateChartData = (data: any[], label: string) => {
     return {
-      labels: data?.map((entry) => `${label} ${entry._id}`),
+      labels: data.map((entry) => `${label} ${entry._id}`),
       datasets: [
         {
           label: `${label} total Sales`,
-          data: data?.map((entry) => entry.totalSales),
-          backgroundColor: "'rgba(255, 99, 132, 0.5)'",
+          data: data.map((entry) => entry.totalSales),
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
           borderColor: "rgba(75,192,192,1)",
           borderWidth: 1,
         },
       ],
     };
   };
+
+  const handleOptionChange = (e: any) => {
+    setSelectedOption(e.target.value);
+  };
+
   return (
     <div>
-      <h2 className="text-center text-2xl font-bold my-4 py-2 bg-orange-200">
-        Daily Sales
+      <h2 className="text-center text-2xl font-bold my-4 py-2 bg-green-200">
+        Sales History
       </h2>
-      <Bar data={generateChartData(data?.data.daily, "Date")} />
-      <label className="-mt-5 text-gray-500">Date pre Month</label>
-      <div className="divider divider-secondary"></div>
-      <h2 className="text-center text-2xl font-bold my-4 py-2 bg-orange-200">
-        Weekly Sales
-      </h2>
-      <Bar data={generateChartData(data?.data.weekly, "Week")} />
-      <label className="-mt-5 text-gray-500">Week pre Year</label>
-      <div className="divider divider-secondary"></div>
-
-      <h2 className="text-center text-2xl font-bold my-4 py-2 bg-orange-200">
-        Monthly Sales
-      </h2>
-      <Bar data={generateChartData(data?.data?.monthly, "Month")} />
-      <label className="-mt-5 text-gray-500">Month pre Year</label>
-      <div className="divider divider-secondary mt-0"></div>
-      <h2 className="text-center text-2xl font-bold my-4 py-2 bg-orange-200">
-        Yearly Sales
-      </h2>
-      <Bar data={generateChartData(data?.data.yearly, "Year")} />
+      <div className="flex justify-end">
+        <select
+          className="select select-success w-full select-sm max-w-xs"
+          value={selectedOption}
+          onChange={handleOptionChange}
+        >
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+      <div className="chart-container">
+        <h2 className="text-center text-2xl font-bold my-4 py-2 bg-orange-200">
+          {selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)}{" "}
+          Sales
+        </h2>
+        <Bar
+          data={generateChartData(
+            data?.data[selectedOption],
+            selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)
+          )}
+        />
+        <label className="-mt-5 text-gray-500">
+          {selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)} pre{" "}
+          {selectedOption === "weekly"
+            ? "Year"
+            : selectedOption.charAt(0).toUpperCase() + selectedOption.slice(1)}
+        </label>
+      </div>
     </div>
   );
 }
