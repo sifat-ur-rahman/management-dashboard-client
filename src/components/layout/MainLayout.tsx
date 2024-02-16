@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, Outlet } from "react-router-dom";
 import Navbar from "../shared/navbar/Navbar";
+import { useAppSelector } from "../../redux/hooks";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
 
 function MainLayout() {
+  const user: any = useAppSelector(useCurrentUser);
   return (
     <>
       <Navbar></Navbar>
@@ -17,31 +21,44 @@ function MainLayout() {
         <div className="drawer-side lg:w-60 w-1/2 mt-10 lg:mt-0 ">
           <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
           <ul className="menu p-4 lg:w-60 text-base-content">
-            <li>
-              <Link className="font-medium" to="/">
-                All Products
-              </Link>
-            </li>
-            <li>
-              <Link className="font-medium" to="/added">
-                Added Products
-              </Link>
-            </li>
-            <li>
-              <Link className="font-medium" to="/bulk-delete">
-                Bulk Delete
-              </Link>
-            </li>
-            <li>
-              <Link className="font-medium" to="/add-product">
-                Add A product
-              </Link>
-            </li>
-            <li>
-              <Link className="font-medium" to="/sales-history">
-                Sales History
-              </Link>
-            </li>
+            {user?.role === "Manager" ? (
+              <>
+                <li>
+                  <Link className="font-medium" to="/all-products">
+                    All Products
+                  </Link>
+                </li>
+                <li>
+                  <Link className="font-medium" to="/add-product">
+                    Add A product
+                  </Link>
+                </li>
+                <li>
+                  <Link className="font-medium" to="/bulk-delete">
+                    Bulk Delete
+                  </Link>
+                </li>
+                <li>
+                  <Link className="font-medium" to="/sales-history">
+                    Sales History
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link className="font-medium" to="/added-products">
+                    Added Products
+                  </Link>
+                </li>
+
+                <li>
+                  <Link className="font-medium" to="/add-product">
+                    Add A product
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

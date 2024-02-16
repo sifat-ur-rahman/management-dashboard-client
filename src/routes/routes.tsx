@@ -8,6 +8,7 @@ import AllProducts from "../pages/AllProducts";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 import BulkDelete from "../pages/BulkDelete";
 import AddedProducts from "../pages/AddedProducts";
+import Welcome from "../pages/Welcome";
 
 const router = createBrowserRouter([
   {
@@ -20,10 +21,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <AllProducts />,
+        element: <Welcome />,
       },
       {
-        path: "added",
+        path: "all-products",
+        element: <AllProducts />,
+      },
+
+      {
+        path: "added-products",
         element: <AddedProducts />,
       },
       {
