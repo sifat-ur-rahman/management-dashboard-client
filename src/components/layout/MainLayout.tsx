@@ -2,10 +2,13 @@
 import { Link, Outlet } from "react-router-dom";
 import Navbar from "../shared/navbar/Navbar";
 import { useAppSelector } from "../../redux/hooks";
-import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useCurrentToken } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
 
 function MainLayout() {
-  const user: any = useAppSelector(useCurrentUser);
+  const token: string = useAppSelector(useCurrentToken);
+
+  const user: any = verifyToken(token);
   return (
     <>
       <Navbar></Navbar>

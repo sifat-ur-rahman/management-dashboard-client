@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -31,13 +32,15 @@ function Login() {
       password: data.password,
     };
 
-    const res = await login(userInfo).unwrap();
-    const user = verifyToken(res.data.token);
+    const res: any = await login(userInfo).unwrap();
+    if (res?.data?.success) {
+      const user = verifyToken(res.data.token);
 
-    dispatch(setUser({ user: user, token: res.data.token }));
-    toast.success("Login successfully");
-    reset();
-    navigate(from, { replace: true });
+      dispatch(setUser({ user: user, token: res.data.token }));
+      toast.success("Login successfully");
+      reset();
+      navigate(from, { replace: true });
+    }
   };
 
   return (
