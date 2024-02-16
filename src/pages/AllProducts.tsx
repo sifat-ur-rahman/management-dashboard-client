@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useDeleteProductMutation,
   useGetProductQuery,
@@ -9,6 +10,10 @@ import DetailsModal from "../components/Modal/DetailsModal";
 import SaleModal from "../components/Modal/SaleModal";
 import UpdateModal from "../components/Modal/UpdateModal";
 import DuplicateModal from "../components/Modal/DuplicateModal";
+import { useAppSelector } from "../redux/hooks";
+import { useCurrentUser } from "../redux/features/auth/authSlice";
+import { useAddAddToProductMutation } from "../redux/features/addToCard/addToCardApi";
+import toast from "react-hot-toast";
 
 function AllProducts() {
   const [modelData, setModelData] = useState();
@@ -29,13 +34,13 @@ function AllProducts() {
   console.log(filterOptions);
 
   // Function to update filter options
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = (key: any, value: any) => {
     setFilterOptions((prevOptions) => ({
       ...prevOptions,
       [key]: value,
     }));
   };
-  const serializeFilterOptions = (options) => {
+  const serializeFilterOptions = (options: any) => {
     const params = new URLSearchParams();
     for (const key in options) {
       if (
@@ -59,7 +64,49 @@ function AllProducts() {
   const { data, isLoading, isError } = useGetProductQuery(queryParams);
 
   const productData = data?.data;
-  console.log({ isError }, { error });
+  //console.log({ isError }, { error });
+  if (error) {
+    toast.error("some thing went wrong");
+  }
+  if (isError) {
+    toast.error("some thing went wrong");
+  }
+  const [addAddToProduct] = useAddAddToProductMutation();
+  const user: any = useAppSelector(useCurrentUser);
+  const [addToCartDisabled, setAddToCartDisabled] = useState<
+    Record<string, boolean>
+  >({});
+  useEffect(() => {
+    const storedDisabledStatus = localStorage.getItem("addToCartDisabled");
+    if (storedDisabledStatus) {
+      setAddToCartDisabled(JSON.parse(storedDisabledStatus));
+    }
+  }, []);
+  const handleAddToCart = async (cardData: any) => {
+    const addToCardData = {
+      productPrice: cardData.price,
+      productImg: cardData.img,
+      buyerName: user?.name,
+      buyerId: user?.userId,
+      productId: cardData._id,
+    };
+
+    const result: any = await addAddToProduct(addToCardData);
+    console.log(result);
+    if (result.data.success) {
+      // Update disabled status in local storage
+      const updatedDisabledStatus = {
+        ...addToCartDisabled,
+        [cardData._id]: true,
+      };
+      localStorage.setItem(
+        "addToCartDisabled",
+        JSON.stringify(updatedDisabledStatus)
+      );
+      setAddToCartDisabled(updatedDisabledStatus);
+      toast.success(`${result.data.message}`);
+    }
+  };
   if (isLoading) {
     return (
       <div className="flex items-center h-screen justify-center">
@@ -258,13 +305,13 @@ function AllProducts() {
               </div>
             </div>
             <div className="mt-2 flex items-center justify-evenly">
-              <label
-                onClick={() => setModelData(p)}
-                htmlFor="booking-modal"
+              <button
+                onClick={() => handleAddToCart(p)}
+                disabled={addToCartDisabled[p._id]}
                 className="btn btn-outline btn-sm btn-primary px-8 text-xl font-bold rounded-full"
               >
-                Buy Now
-              </label>
+                {addToCartDisabled[p._id] ? "Added to Cart" : "Add to Cart"}
+              </button>
               <label
                 onClick={() => setModelData(p)}
                 htmlFor="details-modal"

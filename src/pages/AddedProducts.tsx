@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useDeleteProductMutation,
   useGetProductByUserQuery,
@@ -15,18 +15,24 @@ import { useAddAddToProductMutation } from "../redux/features/addToCard/addToCar
 import toast from "react-hot-toast";
 
 function AddedProducts() {
-  const [modelData, setModelData] = useState();
+  const [modelData, setModelData] = useState<any | null>(null);
   const user: any = useAppSelector(useCurrentUser);
   const [deleteProduct, { error }] = useDeleteProductMutation();
-  console.log(user);
+  const [addToCartDisabled, setAddToCartDisabled] = useState<
+    Record<string, boolean>
+  >({});
   const { data, isLoading, isError } = useGetProductByUserQuery(user?.userId);
   const [addAddToProduct] = useAddAddToProductMutation();
   const productData = data?.data;
   console.log({ isError }, { error });
-  if (error) {
-    toast.error("some thing went wrong");
-  }
-  const [addToCartDisabled, setAddToCartDisabled] = useState({});
+
+  useEffect(() => {
+    const storedDisabledStatus = localStorage.getItem("addToCartDisabled");
+    if (storedDisabledStatus) {
+      setAddToCartDisabled(JSON.parse(storedDisabledStatus));
+    }
+  }, []);
+
   const handleAddToCart = async (cardData: any) => {
     const addToCardData = {
       productPrice: cardData.price,
@@ -39,11 +45,16 @@ function AddedProducts() {
     const result: any = await addAddToProduct(addToCardData);
     console.log(result);
     if (result.data.success) {
-      // Disable the button for the added product
-      setAddToCartDisabled((prevDisabled) => ({
-        ...prevDisabled,
+      // Update disabled status in local storage
+      const updatedDisabledStatus = {
+        ...addToCartDisabled,
         [cardData._id]: true,
-      }));
+      };
+      localStorage.setItem(
+        "addToCartDisabled",
+        JSON.stringify(updatedDisabledStatus)
+      );
+      setAddToCartDisabled(updatedDisabledStatus);
       toast.success(`${result.data.message}`);
     }
   };
@@ -55,6 +66,7 @@ function AddedProducts() {
       </div>
     );
   }
+
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-8">
