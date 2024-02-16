@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useAddProductMutation } from "../redux/features/product/productApi";
+import { useAppSelector } from "../redux/hooks";
+import { useCurrentUser } from "../redux/features/auth/authSlice";
 
 function AddProduct() {
   interface IFormData {
@@ -22,7 +25,11 @@ function AddProduct() {
     height: number;
   }
   const [addProduct, { error }] = useAddProductMutation();
+  const user: any = useAppSelector(useCurrentUser);
   console.log({ error });
+  if (error) {
+    toast.error("Something went wrong");
+  }
   const {
     register,
     formState: { errors },
@@ -46,6 +53,7 @@ function AddProduct() {
           const product = {
             name: data.name,
             img: imgData.data.url,
+            createdBy: user?.userId,
             price: +data.price,
             quantity: +data.quantity,
             releaseDate: data.releaseDate,
@@ -64,10 +72,11 @@ function AddProduct() {
             },
           };
           console.log({ product });
-          addProduct(product);
-
-          toast.success("Product added successfully");
-          reset();
+          const result: any = await addProduct(product);
+          if (result.data.success) {
+            toast.success("Product added successfully");
+            reset();
+          }
         }
       });
   };

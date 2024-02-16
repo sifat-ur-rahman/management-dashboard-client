@@ -9,7 +9,7 @@ const addToCardApi = baseApi.injectEndpoints({
       }),
       providesTags: ["addToCard"],
     }),
-    addAddToProduct: builder.mutation({
+    addAddToCard: builder.mutation({
       query: (addToCardData) => ({
         url: "/add-to-card",
         method: "POST",
@@ -20,5 +20,5 @@ const addToCardApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAddToCardByUserQuery, useAddAddToProductMutation } =
+export const { useGetAddToCardByUserQuery, useAddAddToCardMutation } =
   addToCardApi;

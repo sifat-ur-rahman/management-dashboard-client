@@ -11,7 +11,7 @@ import UpdateModal from "../components/Modal/UpdateModal";
 import DuplicateModal from "../components/Modal/DuplicateModal";
 import { useAppSelector } from "../redux/hooks";
 import { useCurrentUser } from "../redux/features/auth/authSlice";
-import { useAddAddToProductMutation } from "../redux/features/addToCard/addToCardApi";
+import { useAddAddToCardMutation } from "../redux/features/addToCard/addToCardApi";
 import toast from "react-hot-toast";
 
 function AddedProducts() {
@@ -22,7 +22,7 @@ function AddedProducts() {
     Record<string, boolean>
   >({});
   const { data, isLoading, isError } = useGetProductByUserQuery(user?.userId);
-  const [addAddToProduct] = useAddAddToProductMutation();
+  const [addAddToCard] = useAddAddToCardMutation();
   const productData = data?.data;
   console.log({ isError }, { error });
 
@@ -42,7 +42,7 @@ function AddedProducts() {
       productId: cardData._id,
     };
 
-    const result: any = await addAddToProduct(addToCardData);
+    const result: any = await addAddToCard(addToCardData);
     console.log(result);
     if (result.data.success) {
       // Update disabled status in local storage

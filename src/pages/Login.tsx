@@ -20,7 +20,9 @@ function Login() {
     reset,
   } = useForm<IFormData>();
   const [login, { error }] = useLoginMutation();
-  console.log(error);
+  if (error) {
+    toast.error("Something went wrong");
+  }
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,10 +35,11 @@ function Login() {
     };
 
     const res: any = await login(userInfo).unwrap();
-    if (res?.data?.success) {
+    if (res.success) {
       const user = verifyToken(res.data.token);
 
       dispatch(setUser({ user: user, token: res.data.token }));
+
       toast.success("Login successfully");
       reset();
       navigate(from, { replace: true });

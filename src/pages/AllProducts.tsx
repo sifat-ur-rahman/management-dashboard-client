@@ -12,7 +12,7 @@ import UpdateModal from "../components/Modal/UpdateModal";
 import DuplicateModal from "../components/Modal/DuplicateModal";
 import { useAppSelector } from "../redux/hooks";
 import { useCurrentUser } from "../redux/features/auth/authSlice";
-import { useAddAddToProductMutation } from "../redux/features/addToCard/addToCardApi";
+import { useAddAddToCardMutation } from "../redux/features/addToCard/addToCardApi";
 import toast from "react-hot-toast";
 
 function AllProducts() {
@@ -71,7 +71,7 @@ function AllProducts() {
   if (isError) {
     toast.error("some thing went wrong");
   }
-  const [addAddToProduct] = useAddAddToProductMutation();
+  const [addAddToCard] = useAddAddToCardMutation();
   const user: any = useAppSelector(useCurrentUser);
   const [addToCartDisabled, setAddToCartDisabled] = useState<
     Record<string, boolean>
@@ -91,7 +91,7 @@ function AllProducts() {
       productId: cardData._id,
     };
 
-    const result: any = await addAddToProduct(addToCardData);
+    const result: any = await addAddToCard(addToCardData);
     console.log(result);
     if (result.data.success) {
       // Update disabled status in local storage
