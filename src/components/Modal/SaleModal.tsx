@@ -5,7 +5,8 @@ import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import toast from "react-hot-toast";
 import { useAddSaleMutation } from "../../redux/features/sales/saleApi";
 
-function SaleModal({ modelData }: any) {
+function SaleModal({ salesData }: any) {
+  console.log("TP", salesData);
   const user: any = useAppSelector(useCurrentUser);
   const [addSale, { error }] = useAddSaleMutation();
   console.log(error);
@@ -25,7 +26,8 @@ function SaleModal({ modelData }: any) {
       quantity: +data.quantity,
       buyerName: user?.name,
       saleDate: data.date,
-      productId: modelData?._id,
+      productId: salesData?._id,
+      productPrice: salesData?.price,
     };
     console.log(saleData);
     await addSale(saleData);
@@ -44,10 +46,11 @@ function SaleModal({ modelData }: any) {
             ✕
           </label>
           <h3 className="text-lg ">
-            Product name: <span className="font-bold">{modelData?.name}</span>{" "}
+            Product name: <span className="font-bold">{salesData?.name}</span>{" "}
           </h3>
           <h3 className="text-lg my-2">
-            Product price: <span className="font-bold">{modelData?.price}</span>{" "}
+            Product price:{" "}
+            <span className="font-bold">{salesData?.totalPrice}</span>{" "}
           </h3>
           <form onSubmit={handleSubmit(handSale)} method="dialog">
             <div className="form-control w-full max-w-xs">

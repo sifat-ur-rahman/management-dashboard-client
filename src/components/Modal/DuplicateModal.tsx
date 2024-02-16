@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDuplicateProductMutation } from "../../redux/features/product/productApi";
 
-function DuplicateModal({ modelData }) {
+function DuplicateModal({ modelData }: any) {
   const [duplicateProduct, { error }] = useDuplicateProductMutation();
   console.log(error);
   interface IFormData {

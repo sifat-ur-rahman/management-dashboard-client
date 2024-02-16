@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useUpdatedProductMutation } from "../../redux/features/product/productApi";
 
-function UpdateModal({ modelData }) {
+function UpdateModal({ modelData }: any) {
   const [updatedProduct, { error }] = useUpdatedProductMutation();
+
   console.log(error);
+
   interface IFormData {
     name: string;
     price: number;
@@ -55,9 +58,13 @@ function UpdateModal({ modelData }) {
     };
 
     console.log(updatedData);
-    await updatedProduct(updatedData);
+    const result: any = await updatedProduct(updatedData);
     reset();
-    toast.success("Product updated successfully");
+    console.log(result);
+    if (result?.data?.success) {
+      toast.success("Product updated successfully");
+      reset();
+    }
   };
   return (
     <>

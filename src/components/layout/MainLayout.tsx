@@ -46,6 +46,11 @@ function MainLayout() {
                     Sales History
                   </Link>
                 </li>
+                <li>
+                  <Link className="font-medium" to="/check-out">
+                    Check Out
+                  </Link>
+                </li>
               </>
             ) : (
               <>
@@ -58,6 +63,11 @@ function MainLayout() {
                 <li>
                   <Link className="font-medium" to="/add-product">
                     Add A product
+                  </Link>
+                </li>
+                <li>
+                  <Link className="font-medium" to="/check-out">
+                    Check Out
                   </Link>
                 </li>
               </>

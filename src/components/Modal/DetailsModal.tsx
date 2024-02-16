@@ -1,4 +1,5 @@
-function DetailsModal({ modelData }) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function DetailsModal({ modelData }: any) {
   return (
     <>
       <input type="checkbox" id="details-modal" className="modal-toggle" />

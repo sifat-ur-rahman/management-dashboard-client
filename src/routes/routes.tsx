@@ -9,6 +9,7 @@ import ProtectedRoute from "../components/layout/ProtectedRoute";
 import BulkDelete from "../pages/BulkDelete";
 import AddedProducts from "../pages/AddedProducts";
 import Welcome from "../pages/Welcome";
+import CheckOut from "../pages/CheckOut";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "bulk-delete",
         element: <BulkDelete />,
+      },
+      {
+        path: "check-out",
+        element: <CheckOut />,
       },
     ],
   },
