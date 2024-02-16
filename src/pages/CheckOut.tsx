@@ -9,11 +9,9 @@ import CheckOutCard from "../components/CheckOutCard/CheckOutCard";
 function CheckOut() {
   const user: any = useAppSelector(useCurrentUser);
 
-  const {
-    data: addToCardData,
-    isLoading,
-    isError,
-  } = useGetAddToCardByUserQuery(user?.userId);
+  const { data: addToCardData, isLoading } = useGetAddToCardByUserQuery(
+    user?.userId
+  );
   if (isLoading) {
     return (
       <div className="flex items-center h-screen justify-center">
