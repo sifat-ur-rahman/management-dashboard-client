@@ -10,14 +10,9 @@ import {
 function UpdateModal({ productId }: any) {
   const [updatedProduct, { error }] = useUpdatedProductMutation();
 
-  const {
-    data: productData,
-    isLoading,
-    isError,
-  } = useGetOneProductByIdQuery(productId);
+  const { data: productData } = useGetOneProductByIdQuery(productId);
 
   console.log(error);
-  console.log(isError);
 
   const modelData = productData?.data;
   console.log(modelData);
@@ -80,13 +75,6 @@ function UpdateModal({ productId }: any) {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center h-screen justify-center">
-        <span className="loading loading-dots loading-lg"></span>
-      </div>
-    );
-  }
   return (
     <>
       <input type="checkbox" id="updated-modal" className="modal-toggle" />

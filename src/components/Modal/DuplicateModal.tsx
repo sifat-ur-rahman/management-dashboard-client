@@ -1,11 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useDuplicateProductMutation } from "../../redux/features/product/productApi";
+import {
+  useDuplicateProductMutation,
+  useGetOneProductByIdQuery,
+} from "../../redux/features/product/productApi";
 
-function DuplicateModal({ modelData }: any) {
+function DuplicateModal({ productId }: any) {
   const [duplicateProduct, { error }] = useDuplicateProductMutation();
   console.log(error);
+  const { data: productData } = useGetOneProductByIdQuery(productId);
+  console.log(productId);
+  console.log(error);
+
+  const modelData = productData?.data;
+  console.log(modelData?.name);
+
   interface IFormData {
     name: string;
     img: string;
@@ -58,10 +69,14 @@ function DuplicateModal({ modelData }: any) {
     };
 
     console.log(updatedData);
-    await duplicateProduct(updatedData);
+    const result: any = await duplicateProduct(updatedData);
     reset();
-    toast.success("Product updated successfully");
+    if (result?.data?.success) {
+      reset();
+      toast.success("Product updated successfully");
+    }
   };
+
   return (
     <>
       <input type="checkbox" id="Duplicate-modal" className="modal-toggle" />
