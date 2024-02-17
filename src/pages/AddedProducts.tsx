@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 
 function AddedProducts() {
   const [modelData, setModelData] = useState<any | null>(null);
+  const [productId, setProductId] = useState<any | null>(null);
+
   const user: any = useAppSelector(useCurrentUser);
   const [deleteProduct, { error }] = useDeleteProductMutation();
   const [addToCartDisabled, setAddToCartDisabled] = useState<
@@ -85,7 +87,7 @@ function AddedProducts() {
               >
                 <li>
                   <label
-                    onClick={() => setModelData(p)}
+                    onClick={() => setProductId(p._id)}
                     htmlFor="updated-modal"
                   >
                     Edit product
@@ -93,7 +95,7 @@ function AddedProducts() {
                 </li>
                 <li>
                   <label
-                    onClick={() => setModelData(p)}
+                    onClick={() => setProductId(p._id)}
                     htmlFor="Duplicate-modal"
                   >
                     Create Variant
@@ -144,8 +146,8 @@ function AddedProducts() {
         ))}
         <SaleModal modelData={modelData} />
         <DetailsModal modelData={modelData} />
-        <UpdateModal modelData={modelData} />
-        <DuplicateModal modelData={modelData} />
+        <UpdateModal productId={productId} />
+        <DuplicateModal productId={productId} />
       </div>
     </div>
   );

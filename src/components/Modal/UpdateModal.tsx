@@ -1,13 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useUpdatedProductMutation } from "../../redux/features/product/productApi";
+import {
+  useGetOneProductByIdQuery,
+  useUpdatedProductMutation,
+} from "../../redux/features/product/productApi";
 
-function UpdateModal({ modelData }: any) {
+function UpdateModal({ productId }: any) {
   const [updatedProduct, { error }] = useUpdatedProductMutation();
 
-  console.log(error);
+  const {
+    data: productData,
+    isLoading,
+    isError,
+  } = useGetOneProductByIdQuery(productId);
 
+  console.log(error);
+  console.log(isError);
+
+  const modelData = productData?.data;
+  console.log(modelData);
   interface IFormData {
     name: string;
     price: number;
@@ -66,6 +79,14 @@ function UpdateModal({ modelData }: any) {
       reset();
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center h-screen justify-center">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+    );
+  }
   return (
     <>
       <input type="checkbox" id="updated-modal" className="modal-toggle" />
