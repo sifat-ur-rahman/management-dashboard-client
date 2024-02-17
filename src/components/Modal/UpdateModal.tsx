@@ -15,7 +15,7 @@ function UpdateModal({ productId }: any) {
   console.log(error);
 
   const modelData = productData?.data;
-  console.log(modelData);
+
   interface IFormData {
     name: string;
     price: number;

@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 
 function AllProducts() {
   const [modelData, setModelData] = useState();
+  const [productId, setProductId] = useState<any | null>(null);
 
   const [deleteProduct, { error }] = useDeleteProductMutation();
   const [filterOptions, setFilterOptions] = useState({
@@ -265,7 +266,7 @@ function AllProducts() {
               >
                 <li>
                   <label
-                    onClick={() => setModelData(p)}
+                    onClick={() => setProductId(p._id)}
                     htmlFor="updated-modal"
                   >
                     Edit product
@@ -273,7 +274,7 @@ function AllProducts() {
                 </li>
                 <li>
                   <label
-                    onClick={() => setModelData(p)}
+                    onClick={() => setProductId(p._id)}
                     htmlFor="Duplicate-modal"
                   >
                     Create Variant
@@ -324,8 +325,8 @@ function AllProducts() {
         ))}
         <SaleModal modelData={modelData} />
         <DetailsModal modelData={modelData} />
-        <UpdateModal modelData={modelData} />
-        <DuplicateModal modelData={modelData} />
+        <UpdateModal productId={productId} />
+        <DuplicateModal productId={productId} />
       </div>
     </div>
   );

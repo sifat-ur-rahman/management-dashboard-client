@@ -15,7 +15,6 @@ function DuplicateModal({ productId }: any) {
   console.log(error);
 
   const modelData = productData?.data;
-  console.log(modelData?.name);
 
   interface IFormData {
     name: string;
