@@ -11,11 +11,11 @@
 
 ## User Info
 ### User:
-- Email:`john1@example.com`
+- Email: `john1@example.com`
 - password: `123456`
 
 ### Admin:
-- Email:`john3@example.com`
+- Email: `john3@example.com`
 - password: `123456`
 
 ## Server code 
