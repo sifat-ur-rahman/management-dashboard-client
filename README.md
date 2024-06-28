@@ -9,5 +9,18 @@
 - Real-time UI updates are gracefully implemented using RTK Query, ensuring a dynamic and responsive user interface.
 - Redux is employed for state management, maintaining a consistent application state for efficient data handling.
 
+## User Info
+### User:
+
+
+- Email:`john1@example.com`
+- password: `123456`
+
+### Admin:
+
+
+- email:`john3@example.com`
+- password: `123456`
+
 ## Server code 
 ### https://github.com/sifat-ur-rahman/management-dashboard-server
