@@ -9,9 +9,13 @@ import {
 
 function UpdateModal({ productId }: any) {
   const [updatedProduct, { error }] = useUpdatedProductMutation();
-
-  const { data: productData } = useGetOneProductByIdQuery(productId);
-
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>();
+  const { data: productData } = useGetOneProductByIdQuery(productId); // Destructure isLoading from useGetOneProductByIdQuery
   console.log(error);
 
   const modelData = productData?.data;
@@ -34,14 +38,7 @@ function UpdateModal({ productId }: any) {
     height: number;
   }
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm<IFormData>();
-
-  const handUpdateProduct = async (data: IFormData) => {
+  const handUpdateProduct = async (data: any) => {
     const updatedData = {
       id: modelData?._id,
       productData: {
@@ -66,7 +63,7 @@ function UpdateModal({ productId }: any) {
     };
 
     console.log(updatedData);
-    const result: any = await updatedProduct(updatedData);
+    const result: any = await updatedProduct(updatedData).unwrap();
     reset();
     console.log(result);
     if (result?.data?.success) {

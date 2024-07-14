@@ -9,3 +9,5 @@ export const baseApi = createApi({
   tagTypes: ["sale", "product", "addToCard"],
   endpoints: () => ({}),
 });
+
+//https://server-side-ass-6.vercel.app/api
