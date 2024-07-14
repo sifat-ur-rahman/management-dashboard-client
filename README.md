@@ -1,5 +1,5 @@
 # Electric gadgets Management Dashboard
-### https://timely-cannoli-fe9bd7.netlify.app/
+### https://management-dashboard-sandy.vercel.app
 
 ## Project features
 
@@ -11,12 +11,12 @@
 
 ## User Info
 ### User:
-- Email: `john1@example.com`
-- password: `123456`
+- Email: `user@gmail.com`
+- password: `user123`
 
 ### Admin:
-- Email: `john3@example.com`
-- password: `123456`
+- Email: `admin@gmail.com`
+- password: `admin123`
 
 ## Server code 
 ### https://github.com/sifat-ur-rahman/management-dashboard-server
